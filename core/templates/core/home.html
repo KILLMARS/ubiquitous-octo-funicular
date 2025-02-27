@@ -1,0 +1,208 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Home - Medical Certification{% endblock %}
+
+{% block content %}
+    <h1>Streamline Your Medical Device Certification</h1>
+    <p>Navigate regulatory requirements with confidence. Start by determining your device classification - it's free and takes just minutes.</p>
+
+    <!-- Join Waitlist Button -->
+    <button id="openClassify" class="btn btn-primary">Classify Your Device <span>&rarr;</span></button>
+    <button id="openWaitlist" class="btn btn-secondary">Join Waitlist <span>&rarr;</span></button>
+
+    <!-- The Modal -->
+    <div id="waitlistOverlay"></div>
+    <div id="waitlistModal">
+        <div class="modal-content">
+            <span id="closeWaitlist">&times;</span>
+            <h2>Join the Waitlist</h2>
+            <form id="waitlistForm" data-url="{% url 'waitlist' %}">
+                {% csrf_token %}
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="John Doe" required>
+                
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="john@company.com" required>
+                
+                <button type="submit">Join Waitlist</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="classifyOverlay" class="overlay"></div>
+    <div id="classifyModal" class="modal">
+        <div class="modal-content">
+            <span id="closeClassify" class="close-btn">&times;</span>
+            
+            <h1>Medical Device Classification</h1>
+            <p>Complete each step to receive your device classification</p>
+            
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="classificationProgress"></div>
+            </div>
+            
+            <!-- Step Indicators -->
+            <div class="steps-container">
+                <div class="step active" id="step1Indicator">Step 1</div>
+                <div class="step" id="step2Indicator">Step 2</div>
+                <div class="step" id="step3Indicator">Step 3</div>
+                <div class="step" id="step4Indicator">Step 4</div>
+            </div>
+            
+            <!-- Step 1: Device Details -->
+            <div class="step-content" id="step1Content">
+                <h2>Device Details</h2>
+                <p>Basic information about your medical device</p>
+                
+                <div class="form-group">
+                    <label for="intendedPurpose">Intended Purpose</label>
+                    <textarea id="intendedPurpose" name="intended_purpose" placeholder="What is the primary purpose of your device?" rows="4"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="targetConditions">Target Conditions</label>
+                    <textarea id="targetConditions" name="target_conditions" placeholder="What medical conditions does your device address?" rows="4"></textarea>
+                </div>
+                
+                <div class="button-container">
+                    <button class="back-btn disabled">&larr; Back</button>
+                    <button class="continue-btn" id="step1Continue">Continue &rarr;</button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Technical Specifications -->
+            <div class="step-content" id="step2Content" style="display: none;">
+                <h2>Technical Specifications</h2>
+                <p>Technical characteristics and operation method</p>
+                
+                <div class="form-group">
+                    <label>How does the device achieve its intended purpose?</label>
+                    <p class="field-helper">Describe if it's mechanical, uses energy conversion, or incorporates chemical/biological processes</p>
+                    <textarea id="operationMechanism" name="operation_mechanism" placeholder="Describe the mechanism..." rows="4"></textarea>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="hasSoftware" name="has_software">
+                    <label for="hasSoftware">Does the device incorporate software or digital elements?</label>
+                </div>
+                
+                <div class="form-group">
+                    <label>External energy source (if any)</label>
+                    <p class="field-helper">E.g., electrical power, ionizing radiation</p>
+                    <input type="text" id="energySource" name="energy_source" placeholder="Energy source...">
+                </div>
+                
+                <div class="button-container">
+                    <button class="back-btn" id="step2Back">&larr; Back</button>
+                    <button class="continue-btn" id="step2Continue">Continue &rarr;</button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Safety & Risk -->
+            <div class="step-content" id="step3Content" style="display: none;">
+                <h2>Safety & Risk</h2>
+                <p>Risk assessment and safety considerations</p>
+                
+                <div class="form-group">
+                    <label>What potential harm could occur if the device fails?</label>
+                    <textarea id="potentialRisks" name="potential_risks" placeholder="Describe potential risks..." rows="4"></textarea>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="supportsLife" name="supports_life">
+                    <label for="supportsLife">Does the device support or sustain life?</label>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="seriousConsequences" name="serious_consequences">
+                    <label for="seriousConsequences">Would a malfunction have immediate, serious consequences?</label>
+                </div>
+                
+                <div class="button-container">
+                    <button class="back-btn" id="step3Back">&larr; Back</button>
+                    <button class="continue-btn" id="step3Continue">Continue &rarr;</button>
+                </div>
+            </div>
+            
+            <!-- Step 4: Market & Standards -->
+            <div class="step-content" id="step4Content" style="display: none;">
+                <h2>Market & Standards</h2>
+                <p>Target markets and applicable standards</p>
+                
+                <div class="form-group">
+                    <label>Select target countries for registration</label>
+                    <p class="field-helper">Choose all countries where you plan to register the device</p>
+                    
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="usa" name="target_markets" value="USA">
+                            <label for="usa">USA</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="eu" name="target_markets" value="EU">
+                            <label for="eu">EU</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="uk" name="target_markets" value="UK">
+                            <label for="uk">UK</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="canada" name="target_markets" value="Canada">
+                            <label for="canada">Canada</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="japan" name="target_markets" value="Japan">
+                            <label for="japan">Japan</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="australia" name="target_markets" value="Australia">
+                            <label for="australia">Australia</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="brazil" name="target_markets" value="Brazil">
+                            <label for="brazil">Brazil</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="china" name="target_markets" value="China">
+                            <label for="china">China</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="form-group">
+                    <label for="contactName">Contact Name</label>
+                    <input type="text" id="contactName" name="contact_name" placeholder="Your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactEmail">Contact Email</label>
+                    <input type="email" id="contactEmail" name="contact_email" placeholder="your@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" name="company_name" placeholder="Your company">
+                </div>
+                
+                <div class="button-container">
+                    <button class="back-btn" id="step4Back">&larr; Back</button>
+                    <button class="submit-btn" id="submitClassification">Submit</button>
+                </div>
+            </div>
+            
+            <!-- Success Message -->
+            <div class="step-content" id="successContent" style="display: none;">
+                <div class="success-message">
+                    <div class="success-icon">✓</div>
+                    <h2>Thank You!</h2>
+                    <p>Your submission has been received. We'll prepare your device classification report and contact you soon.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    </script>
+{% endblock %}

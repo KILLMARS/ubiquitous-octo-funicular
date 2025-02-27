@@ -1,0 +1,326 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #F8FAFC;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+h1 {
+    color: #2563EB;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+button {
+    background: linear-gradient(90deg, #2563EB, #3B82F6);
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #3B82F6, #60A5FA);
+}
+
+#waitlistOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark transparent overlay */
+    backdrop-filter: blur(5px); /* Apply blur effect */
+    z-index: 999;
+}
+
+/* Modal Container */
+#waitlistModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* Close button */
+#closeWaitlist {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Modal Form Styling */
+#waitlistForm input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#waitlistForm button {
+    width: 100%;
+    padding: 10px;
+    background: #2563EB;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#waitlistForm button:hover {
+    background: #1E40AF;
+}
+
+ /* Modal Styles */
+ .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 8px;
+    z-index: 1000;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-content {
+    padding: 30px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #555;
+}
+
+/* Progress Bar */
+.progress-container {
+    width: 100%;
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    margin: 30px 0 15px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(to right, #1877f2, #36a7ff);
+    border-radius: 4px;
+    width: 25%; /* Start at 25% */
+    transition: width 0.3s ease;
+}
+
+/* Steps Indicator */
+.steps-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.step {
+    color: #6c757d;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.step.active {
+    color: #1877f2;
+}
+
+/* Form Styling */
+.step-content {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+h2 {
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.step-content > p {
+    color: #6c757d;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.field-helper {
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: -5px;
+    margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    border-color: #1877f2;
+    outline: none;
+}
+
+/* Checkbox Styling */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+}
+
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+.checkbox-item label {
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+/* Button Styling */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.back-btn,
+.continue-btn,
+.submit-btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.back-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    color: #6c757d;
+}
+
+.back-btn:hover:not(.disabled) {
+    background-color: #e9ecef;
+}
+
+.back-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.continue-btn {
+    background-color: #1877f2;
+    border: none;
+    color: white;
+}
+
+.continue-btn:hover {
+    background-color: #0d6efd;
+}
+
+.submit-btn {
+    background-color: #1877f2;
+    border: none;
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: #0d6efd;
+}
+
+/* Success Message */
+.success-message {
+    text-align: center;
+    padding: 30px 0;
+}
+
+.success-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background-color: #d4edda;
+    color: #28a745;
+    border-radius: 50%;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
